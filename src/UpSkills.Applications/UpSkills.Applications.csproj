@@ -10,9 +10,4 @@
     <ProjectReference Include="..\UpSkills.Domain\UpSkills.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exceptions\" />
-    <Folder Include="Utils\" />
-  </ItemGroup>
-
 </Project>
