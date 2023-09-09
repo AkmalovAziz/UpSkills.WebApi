@@ -10,4 +10,14 @@
     <ProjectReference Include="..\UpSkills.DataAccess\UpSkills.DataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto\Categories\" />
+    <Folder Include="Dto\Courses\" />
+    <Folder Include="Dto\Videos\" />
+    <Folder Include="Dto\Users\" />
+    <Folder Include="Dto\Orders\" />
+    <Folder Include="Dto\Auth\" />
+    <Folder Include="Validations\" />
+  </ItemGroup>
+
 </Project>
