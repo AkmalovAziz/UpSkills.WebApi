@@ -11,13 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\Categories\" />
-    <Folder Include="Dto\Courses\" />
-    <Folder Include="Dto\Videos\" />
-    <Folder Include="Dto\Users\" />
-    <Folder Include="Dto\Orders\" />
-    <Folder Include="Dto\Auth\" />
-    <Folder Include="Validations\" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
 </Project>

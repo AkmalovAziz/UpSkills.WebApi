@@ -1,4 +1,6 @@
-﻿namespace UpSkills.Domain.Entities.Users;
+﻿using UpSkills.Domain.Enums;
+
+namespace UpSkills.Domain.Entities.Users;
 
 public class User : AudiTable
 {
@@ -11,4 +13,5 @@ public class User : AudiTable
     public string Description { get; set; } = string.Empty;
     public float Amount { get; set; }
     public DateOnly BirthDate { get; set; }
+    public UserStatusRoles Status { get; set; }
 }
