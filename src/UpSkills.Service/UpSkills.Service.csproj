@@ -7,7 +7,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="MailKit" Version="4.2.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.10" />
+	<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.0" />
+    <PackageReference Include="MimeKit" Version="4.2.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<FrameWorkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>	
+	
+  <ItemGroup>
     <ProjectReference Include="..\UpSkills.Persistance\UpSkills.Persistance.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Categories\" />
+    <Folder Include="Interfaces\Orders\" />
+    <Folder Include="Interfaces\Users\" />
+    <Folder Include="Interfaces\Videos\" />
+    <Folder Include="Service\Categories\" />
+    <Folder Include="Service\Courses\" />
+    <Folder Include="Service\Orders\" />
+    <Folder Include="Service\Videos\" />
+    <Folder Include="Service\Users\" />
   </ItemGroup>
 
 </Project>

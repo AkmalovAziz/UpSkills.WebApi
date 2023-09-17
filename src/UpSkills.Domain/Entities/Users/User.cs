@@ -10,8 +10,9 @@ public class User : AudiTable
     public string Email { get; set; } = string.Empty;
     public string ImagePath { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string Salt { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public float Amount { get; set; }
-    public DateOnly BirthDate { get; set; }
+    public string BirthDate { get; set; } = string.Empty;
     public UserStatusRoles Status { get; set; }
 }

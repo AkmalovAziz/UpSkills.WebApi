@@ -27,12 +27,17 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<UserViewModel> GetByIdAsync(long id)
+    public Task<User?> GetByEmailAsync(string email)
     {
         throw new NotImplementedException();
     }
 
-    public Task<User> GetIdAsync(long id)
+    public Task<UserViewModel?> GetByIdAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<User?> GetIdAsync(long id)
     {
         throw new NotImplementedException();
     }
