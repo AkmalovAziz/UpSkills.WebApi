@@ -1,6 +1,8 @@
 ﻿using UpSkills.Applications.Exceptions.Courses;
 using UpSkills.Applications.Utils;
 using UpSkills.DataAccess.Interfaces.Courses;
+using UpSkills.DataAccess.Interfaces.Orders;
+using UpSkills.DataAccess.Interfaces.Videos;
 using UpSkills.DataAccess.ViewModels;
 using UpSkills.Domain.Entities.Courses;
 using UpSkills.Persistance.Dto.Courses;
@@ -15,15 +17,17 @@ public class CourseService : ICourseService
     private ICoursRepository _repository;
     private IPaginator _paginator;
     private IFileService _fileservice;
-    private IIdentityService _identity;
+    private IOrderRepository _order;
+    private IVideoRepository _video;
 
     public CourseService(ICoursRepository repository, IFileService fileService,
-        IPaginator paginator, IIdentityService identity)
+        IPaginator paginator, IOrderRepository order, IVideoRepository videoRepository)
     {
         this._repository = repository;
         this._paginator = paginator;
         this._fileservice = fileService;
-        this._identity = identity;
+        this._order = order;
+        this._video = videoRepository;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
@@ -48,12 +52,10 @@ public class CourseService : ICourseService
     {
         var course = await _repository.GetIdAsync(courseId);
         if (course is null) throw new CourseNotFoundException();
-
+        var order = await _order.DeleteAsync(courseId);
+        var video = await _video.DeleteAsync(courseId);
         var result = await _repository.DeleteAsync(courseId);
-        if (course.ImagePath is not null)
-        {
-            var image = await _fileservice.DeleteImageAsync(course.ImagePath);
-        }
+        var image = await _fileservice.DeleteImageAsync(course.ImagePath);
 
         return result > 0;
     }

@@ -6,7 +6,7 @@ namespace UpSkills.DataAccess.Interfaces
     {
         public Task<int> CreateAsync(TEntity entity);
         public Task<int> UpdateAsync(long id, TEntity entity);
-        public Task<int> DeleteAsync(long id);
+        public Task<long> DeleteAsync(long id);
         public Task<IList<TViewModel>> GetAllAsync(PaginationParams @params);
         public Task<TViewModel> GetByIdAsync(long id);
         public Task<long> CountAsync();

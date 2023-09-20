@@ -4,6 +4,7 @@ namespace UpSkills.DataAccess.ViewModels;
 
 public class CourseViewModel : AudiTable
 {
+    public long Id { get; set; }
     public long CategoryId { get; set; }
     public string CategoryName { get; set; } = string.Empty;
     public string CourseName { get; set; } = string.Empty;

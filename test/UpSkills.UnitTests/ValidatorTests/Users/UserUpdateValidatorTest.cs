@@ -190,6 +190,12 @@ public class UserUpdateValidatorTest
         Assert.True(result.IsValid);
     }
 
+    [Theory]
+    [InlineData(5.5)]
+    [InlineData(15.5)]
+    [InlineData(10)]
+    [InlineData(8)]
+    [InlineData(5.2)]
     public void ShouldReturnWrongImageSize(float MaxImageSizeMB)
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("we sell an electronic products to our clients");

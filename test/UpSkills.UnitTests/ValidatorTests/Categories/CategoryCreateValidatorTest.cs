@@ -20,7 +20,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
         var dto = new CategoryCreateDto();
 
-        dto.Name = name;
+        dto.CategoryName = name;
         dto.ImagePath = imageFile;
         dto.Description = "ndjfbfhjfbvjhfbvhfbjvdfhvfdjfv";
 
@@ -39,7 +39,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
         var dto = new CategoryCreateDto();
 
-        dto.Name = name;
+        dto.CategoryName = name;
         dto.ImagePath = imageFile;
         dto.Description = "ndjfbfhjfbvjhfbvhfbjvdfhvfdjfv";
 
@@ -60,7 +60,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
         var dto = new CategoryCreateDto();
 
-        dto.Name = "Akmalov";
+        dto.CategoryName = "Akmalov";
         dto.ImagePath = imageFile;
         dto.Description = description;
 
@@ -80,7 +80,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", "file.jpg");
         var dto = new CategoryCreateDto();
 
-        dto.Name = "Akmalov";
+        dto.CategoryName = "Akmalov";
         dto.ImagePath = imageFile;
         dto.Description = description;
 
@@ -89,6 +89,12 @@ public class CategoryCreateValidatorTest
         Assert.True(result.IsValid);
     }
 
+    [Theory]
+    [InlineData(5.5)]
+    [InlineData(15.5)]
+    [InlineData(10)]
+    [InlineData(8)]
+    [InlineData(5.2)]
     public void ShouldReturnWrongImageSize(float MaxImageSizeMB)
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("we sell an electronic products to our clients");
@@ -96,7 +102,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, imageSizeInBytes, "data", "file.png");
         var dto = new CategoryCreateDto();
 
-        dto.Name = "akmalov";
+        dto.CategoryName = "akmalov";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
         dto.ImagePath = imageFile;
 
@@ -118,7 +124,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, imageSizeInBytes, "data", "file.png");
         var dto = new CategoryCreateDto();
 
-        dto.Name = "akmalov";
+        dto.CategoryName = "akmalov";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
         dto.ImagePath = imageFile;
 
@@ -142,7 +148,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", imagename);
         var dto = new CategoryCreateDto();
 
-        dto.Name = "akmalov";
+        dto.CategoryName = "akmalov";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
         dto.ImagePath = imageFile;
 
@@ -163,7 +169,7 @@ public class CategoryCreateValidatorTest
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, byteImage.Length, "data", imagename);
         var dto = new CategoryCreateDto();
 
-        dto.Name = "akmalov";
+        dto.CategoryName = "akmalov";
         dto.Description = "hbjbcjdsvsdhvbjhdsbvsjbvjsdhbvjsdbvhsdbj";
         dto.ImagePath = imageFile;
 

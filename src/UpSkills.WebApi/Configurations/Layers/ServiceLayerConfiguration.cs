@@ -1,11 +1,11 @@
-﻿using System.Security.Principal;
-using UpSkills.Service.Interfaces.Auth;
+﻿using UpSkills.Service.Interfaces.Auth;
 using UpSkills.Service.Interfaces.Categories;
 using UpSkills.Service.Interfaces.Commons;
 using UpSkills.Service.Interfaces.Courses;
 using UpSkills.Service.Interfaces.Notifications;
 using UpSkills.Service.Interfaces.Orders;
 using UpSkills.Service.Interfaces.Users;
+using UpSkills.Service.Interfaces.Videos;
 using UpSkills.Service.Service.Auth;
 using UpSkills.Service.Service.Categories;
 using UpSkills.Service.Service.Commons;
@@ -13,6 +13,7 @@ using UpSkills.Service.Service.Courses;
 using UpSkills.Service.Service.Notifications;
 using UpSkills.Service.Service.Orders;
 using UpSkills.Service.Service.Users;
+using UpSkills.Service.Service.Videos;
 
 namespace UpSkills.WebApi.Configurations.Layers;
 
@@ -30,5 +31,6 @@ public static class ServiceLayerConfiguration
         builder.Services.AddScoped<ICourseService, CourseService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IOrderService, OrderService>();
+        builder.Services.AddScoped<IVideoService, VideoService>();
     }
 }

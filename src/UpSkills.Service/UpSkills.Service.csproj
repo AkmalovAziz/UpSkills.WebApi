@@ -29,9 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Videos\" />
     <Folder Include="Service\Categories\" />
-    <Folder Include="Service\Videos\" />
   </ItemGroup>
 
 </Project>

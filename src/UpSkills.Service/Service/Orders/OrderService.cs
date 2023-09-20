@@ -1,5 +1,6 @@
 ﻿using UpSkills.Applications.Exceptions.Orders;
 using UpSkills.Applications.Exceptions.Users;
+using UpSkills.Applications.Utils;
 using UpSkills.DataAccess.Interfaces.Orders;
 using UpSkills.DataAccess.ViewModels;
 using UpSkills.Domain.Entities.Orders;
@@ -14,11 +15,14 @@ public class OrderService : IOrderService
 {
     private IOrderRepository _repository;
     private IIdentityService _identity;
+    private IPaginator _paginator;
 
-    public OrderService(IOrderRepository repository, IIdentityService identityService)
+    public OrderService(IOrderRepository repository, IIdentityService identityService,
+        IPaginator paginator)
     {
         this._repository = repository;
         this._identity = identityService;
+        this._paginator = paginator;
     }
     public async Task<long> CountAsync() => await _repository.CountAsync();
 
@@ -45,6 +49,15 @@ public class OrderService : IOrderService
         var result = await _repository.DeleteAsync(orderId);
 
         return result > 0;
+    }
+
+    public async Task<IList<OrderViewModel>> GetAllAsync(PaginationParams @params)
+    {
+        var order = await _repository.GetAllAsync(@params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+
+        return order;
     }
 
     public async Task<OrderViewModel?> GetByIdAsync(long orderId)

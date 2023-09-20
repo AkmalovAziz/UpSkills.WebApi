@@ -54,7 +54,7 @@ public class UserRepository : BaseRepository, IUserRepository
         }
     }
 
-    public async Task<int> DeleteAsync(long id)
+    public async Task<long> DeleteAsync(long id)
     {
         try
         {

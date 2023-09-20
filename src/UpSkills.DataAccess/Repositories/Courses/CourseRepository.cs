@@ -35,7 +35,6 @@ public class CourseRepository : BaseRepository, ICoursRepository
         try
         {
             await _connection.OpenAsync();
-
             string query = "INSERT INTO public.courses(category_id, course_name, price_per_month, description, image_path, " +
                 "created_at, updated_at) VALUES (@CategoryId, @CourseName, @PricePerMonth, @Description, @ImagePath, @CreatedAt, " +
                     "@UpdatedAt);";
@@ -54,13 +53,13 @@ public class CourseRepository : BaseRepository, ICoursRepository
         }
     }
 
-    public async Task<int> DeleteAsync(long id)
+    public async Task<long> DeleteAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
-
-            string query = "DELETE FROM courses WHERE id = @Id;";
+            
+            string query = "DELETE FROM courses WHERE id = @Id OR category_id = @Id";
 
             var result = await _connection.ExecuteAsync(query, new {Id = id});
 
@@ -81,9 +80,10 @@ public class CourseRepository : BaseRepository, ICoursRepository
         try
         {
             await _connection.OpenAsync();
-
-            string query = $"SELECT * FROM courses JOIN categories ON courses.category_id = categories.id ORDER BY " +
-                $"courses.id DESC OFFSET {@params.SkipCount()} LIMIT {@params.PageSize};";
+            string query = $"SELECT courses.id, courses.course_name, courses.description, categories.category_name, " +
+                $"courses.category_id, courses.price_per_month, courses.image_path, courses.created_at, courses.updated_at " +
+                    $"FROM courses JOIN categories ON courses.category_id = categories.id ORDER BY " +
+                        $"courses.id DESC OFFSET {@params.SkipCount()} LIMIT {@params.PageSize};";
 
             var result = (await _connection.QueryAsync<CourseViewModel>(query)).ToList();
 
@@ -105,7 +105,9 @@ public class CourseRepository : BaseRepository, ICoursRepository
         {
             await _connection.OpenAsync();
 
-            string query = "SELECT * FROM courses JOIN categories ON courses.category_id = categories.id WHERE courses.id = @Id";
+            string query = "SELECT courses.id, courses.course_name, courses.description, categories.category_name, " +
+                "courses.category_id, courses.price_per_month, courses.image_path, courses.created_at, courses.updated_at " +
+                    "FROM courses JOIN categories ON courses.category_id = categories.id WHERE courses.id = @Id";
 
             var result = await _connection.QuerySingleOrDefaultAsync<CourseViewModel>(query, new {Id = id});
 
@@ -148,7 +150,6 @@ public class CourseRepository : BaseRepository, ICoursRepository
         try
         {
             await _connection.OpenAsync();
-
             string query = $"SELECT * FROM courses JOIN categories ON courses.category_id = categories.id WHERE " +
                 $"courses.course_name ILIKE '{search}%' OR courses.course_name ILIKE '%{search}%'";
 
@@ -171,7 +172,6 @@ public class CourseRepository : BaseRepository, ICoursRepository
         try
         {
             await _connection.OpenAsync();
-
             string query = $"UPDATE public.courses SET course_name=@CourseName, price_per_month=@PricePerMonth, description=@Description, " +
                 $"image_path=@ImagePath, created_at=@CreatedAt, updated_at=@UpdatedAt WHERE id = {id};";
 

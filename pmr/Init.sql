@@ -51,7 +51,8 @@ CREATE TABLE IF NOT EXISTS public.videos
     id bigint generated always as identity NOT NULL,
     course_id bigint NOT NULL,
     image_path text,
-    descriptions text,
+    video_path text,
+    video_descriptions text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     PRIMARY KEY (id)

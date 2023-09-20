@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UpSkills.Applications.Utils;
 using UpSkills.Persistance.Dto.Orders;
 using UpSkills.Service.Interfaces.Orders;
 
@@ -10,6 +11,7 @@ namespace UpSkills.WebApi.Controllers
     public class OrderController : ControllerBase
     {
         private IOrderService _service;
+        private readonly int maxPageSize = 30;
 
         public OrderController(IOrderService orderService)
         {
@@ -30,6 +32,11 @@ namespace UpSkills.WebApi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetByIdAsync(long orderId)
             => Ok(await _service.GetByIdAsync(orderId));
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAlldAsync([FromQuery] int page = 1)
+            => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
         [HttpGet("count")]
         [AllowAnonymous]

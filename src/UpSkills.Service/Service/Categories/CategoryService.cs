@@ -1,6 +1,7 @@
 ﻿using UpSkills.Applications.Exceptions.Categories;
 using UpSkills.Applications.Utils;
 using UpSkills.DataAccess.Interfaces.Categories;
+using UpSkills.DataAccess.Interfaces.Courses;
 using UpSkills.Domain.Entities.Categories;
 using UpSkills.Persistance.Dto.Categories;
 using UpSkills.Persistance.Helpers;
@@ -12,17 +13,17 @@ namespace UpSkills.Service.Service.Categories;
 public class CategoryService : ICategoryService
 {
     private IPaginator _paginator;
+    private ICoursRepository _course;
     private ICategoryRepository _repository;
     private IFileService _fileservice;
-    private IIdentityService _identity;
 
     public CategoryService(ICategoryRepository repository, IPaginator paginator,
-        IFileService fileservice, IIdentityService identityService)
+        IFileService fileservice, ICoursRepository coursRepository)
     {
         this._repository = repository;
         this._fileservice = fileservice;
-        this._identity = identityService;
         this._paginator = paginator;
+        this._course = coursRepository;
     }
     public async Task<bool> CreateAsync(CategoryCreateDto dto)
     {
@@ -41,10 +42,11 @@ public class CategoryService : ICategoryService
     {
         var category = await _repository.GetIdAsync(categoryId);
         if (category is null) throw new CategoryNotFoundException();
-        if(category.ImagePath is not null)
+        if (category.ImagePath is not null)
         {
             var delete = await _fileservice.DeleteImageAsync(category.ImagePath);
         }
+        var course = await _course.DeleteAsync(categoryId);
         var result = await _repository.DeleteAsync(categoryId);
 
         return result > 0;
@@ -90,4 +92,13 @@ public class CategoryService : ICategoryService
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
+
+    public async Task<IList<Category>> SearchAsync(string search, PaginationParams @params)
+    {
+        var category = await _repository.SearchAsync(search, @params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
+
+        return category;
+    }
 }

@@ -54,6 +54,11 @@ namespace UpSkills.WebApi.Controllers
         public async Task<IActionResult> GetByIdAsync(long categoryId)
             => Ok(await _service.GetByIdAsync(categoryId));
 
+        [HttpGet("search")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchAsync(string search, [FromQuery] int page = 1)
+            => Ok(await _service.SearchAsync(search, new PaginationParams(page, maxPageSize)));
+
         [HttpGet("count")]
         [AllowAnonymous]
         public async Task<IActionResult> CountAsync() => Ok(await _service.CountAsync());

@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using UpSkills.Applications.Utils;
 using UpSkills.DataAccess.Interfaces.Categories;
-using UpSkills.DataAccess.Repositories.Courses;
 using UpSkills.Domain.Entities.Categories;
 using static Dapper.SqlMapper;
 
@@ -14,6 +13,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         try
         {
             await _connection.OpenAsync();
+
             string query = "SELECT COUNT(*) FROM categories";
 
             var result = await _connection.QuerySingleAsync<long>(query);
@@ -42,7 +42,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
 
             return result;
         }
-        catch 
+        catch
         {
             return 0;
         }
@@ -52,18 +52,15 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         }
     }
 
-    public async Task<int> DeleteAsync(long id)
+    public async Task<long> DeleteAsync(long id)
     {
         try
         {
-            //var course = new CourseRepository();
-            //course.DeleteAsync(id);
-
             await _connection.OpenAsync();
 
             string query = $"DELETE FROM categories WHERE id=@Id;";
 
-            var result = await _connection.ExecuteAsync(query, new {Id = id});
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
 
             return result;
         }
@@ -109,15 +106,38 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         try
         {
             await _connection.OpenAsync();
+
             string query = "SELECT * FROM categories WHERE id = @Id;";
 
-            var result = await _connection.QuerySingleAsync<Category>(query, new {Id = id});
+            var result = await _connection.QuerySingleAsync<Category>(query, new { Id = id });
 
             return result;
         }
         catch
         {
             return null;
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
+    }
+
+    public async Task<IList<Category>> SearchAsync(string search, PaginationParams @params)
+    {
+        try
+        {
+            await _connection.OpenAsync();
+            string query = $"SELECT * FROM categories WHERE category_name ILIKE '{search}%' OR category_name ILIKE " +
+                $"'%{search}%' OFFSET {@params.SkipCount()} LIMIT {@params.PageSize}";
+
+            var result = (await _connection.QueryAsync<Category>(query)).ToList();
+
+            return result;
+        }
+        catch
+        {
+            return new List<Category>();
         }
         finally
         {

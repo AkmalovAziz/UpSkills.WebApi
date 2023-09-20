@@ -52,13 +52,13 @@ public class OrderRepository : BaseRepository, IOrderRepository
         }
     }
 
-    public async Task<int> DeleteAsync(long id)
+    public async Task<long> DeleteAsync(long id)
     {
         try
         {
             await _connection.OpenAsync();
 
-            string query = "DELETE FROM orders WHERE id = @Id;";
+            string query = "DELETE FROM orders WHERE id = @Id OR course_id = @Id";
 
             var result = await _connection.ExecuteAsync(query, new {Id = id});
 
@@ -74,9 +74,28 @@ public class OrderRepository : BaseRepository, IOrderRepository
         }
     }
 
-    public Task<IList<OrderViewModel>> GetAllAsync(PaginationParams @params)
+    public async Task<IList<OrderViewModel>> GetAllAsync(PaginationParams @params)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _connection.OpenAsync();
+            string query = "SELECT orders.user_id, orders.course_id, users.first_name, users.last_name, users.phone_number," +
+                "users.image_path, courses.course_name, courses.price_per_month, orders.id, orders.created_at FROM orders " +
+                    "JOIN courses ON orders.course_id = courses.id JOIN users ON orders.user_id = users.id ORDER BY orders.id " +
+                        $"OFFSET {@params.SkipCount()} LIMIT {@params.PageSize}";
+
+            var result = (await _connection.QueryAsync<OrderViewModel>(query)).ToList();
+
+            return result;
+        }
+        catch
+        {
+            return new List<OrderViewModel>();
+        }
+        finally
+        {
+            await _connection.CloseAsync();
+        }
     }
 
     public async Task<OrderViewModel?> GetByIdAsync(long id)
@@ -84,9 +103,9 @@ public class OrderRepository : BaseRepository, IOrderRepository
         try
         {
             await _connection.OpenAsync();
-
-            string query = "SELECT * FROM orders JOIN courses ON orders.course_id = courses.id JOIN users ON " +
-                "orders.user_id = users.id WHERE orders.id = @Id;";
+            string query = "SELECT orders.user_id, orders.course_id, users.first_name, users.last_name, users.phone_number," +
+                "users.image_path, courses.course_name, courses.price_per_month, orders.id, orders.created_at FROM orders " +
+                    "JOIN courses ON orders.course_id = courses.id JOIN users ON orders.user_id = users.id WHERE orders.id = @Id;";
 
             var result = await _connection.QuerySingleOrDefaultAsync<OrderViewModel>(query, new {Id = id});
 

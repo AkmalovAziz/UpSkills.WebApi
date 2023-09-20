@@ -2,8 +2,9 @@
 
 namespace UpSkills.DataAccess.ViewModels;
 
-public class OrderViewModel : AudiTable
+public class OrderViewModel 
 {
+    public long Id { get; set; }
     public long CourseId { get; set; }
     public long UserId { get; set; }
     public string FirstName { get; set; } = string.Empty;

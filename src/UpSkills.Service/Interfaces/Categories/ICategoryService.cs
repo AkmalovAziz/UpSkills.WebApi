@@ -10,6 +10,7 @@ public interface ICategoryService
     public Task<bool> UpdateAsync(long categoryId, CategoryUpdateDto dto);
     public Task<bool> DeleteAsync(long categoryId);
     public Task<IList<Category>> GetAllAsync(PaginationParams @params);
+    public Task<IList<Category>> SearchAsync(string search, PaginationParams @params);
     public Task<Category> GetByIdAsync(long categoryId);
     public Task<long> CountAsync();
 }
