@@ -27,7 +27,7 @@ public class CategoryService : ICategoryService
     public async Task<bool> CreateAsync(CategoryCreateDto dto)
     {
         var category = new Category();
-        category.CategoryName = dto.Name;
+        category.CategoryName = dto.CategoryName;
         category.Description = dto.Description;
         string image = await _fileservice.UploadImageAsync(dto.ImagePath);
         category.ImagePath = image;
@@ -41,11 +41,11 @@ public class CategoryService : ICategoryService
     {
         var category = await _repository.GetIdAsync(categoryId);
         if (category is null) throw new CategoryNotFoundException();
-        var result = await _repository.DeleteAsync(categoryId);
         if(category.ImagePath is not null)
         {
             var delete = await _fileservice.DeleteImageAsync(category.ImagePath);
         }
+        var result = await _repository.DeleteAsync(categoryId);
 
         return result > 0;
     }
@@ -73,7 +73,7 @@ public class CategoryService : ICategoryService
         if (category is null) throw new CategoryNotFoundException();
 
         category.Description = dto.Description;
-        category.CategoryName = dto.Name;
+        category.CategoryName = dto.CategoryName;
         if (dto.ImagePath is not null)
         {
             var deleteResult = await _fileservice.DeleteImageAsync(category.ImagePath);
@@ -88,4 +88,6 @@ public class CategoryService : ICategoryService
 
         return result > 0;
     }
+
+    public async Task<long> CountAsync() => await _repository.CountAsync();
 }

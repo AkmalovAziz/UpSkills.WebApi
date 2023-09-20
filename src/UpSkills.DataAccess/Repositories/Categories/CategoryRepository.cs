@@ -35,8 +35,8 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         try
         {
             await _connection.OpenAsync();
-            string query = "INSERT INTO public.categories(name, description, created_at, updated_at, image_path)" +
-                "VALUES (@CategoryName, @Description, @CreatedAt, @UpdatedAt, ImagePath);";
+            string query = "INSERT INTO public.categories(category_name, description, created_at, updated_at, image_path)" +
+                "VALUES (@CategoryName, @Description, @CreatedAt, @UpdatedAt, @ImagePath);";
 
             var result = await _connection.ExecuteAsync(query, entity);
 
@@ -56,12 +56,12 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
     {
         try
         {
-            var course = new CourseRepository();
-            course.DeleteAsync(id);
+            //var course = new CourseRepository();
+            //course.DeleteAsync(id);
 
             await _connection.OpenAsync();
 
-            string query = "DELETE FROM categories WHER id = @Id";
+            string query = $"DELETE FROM categories WHERE id=@Id;";
 
             var result = await _connection.ExecuteAsync(query, new {Id = id});
 
@@ -82,8 +82,8 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"SELECT * FROM categories ORDER BY id DESC LIMIT {@params.SkipCount()} " +
-                $"OFFSET {@params.PageSize}";
+            string query = $"SELECT * FROM categories ORDER BY id DESC OFFSET {@params.SkipCount()} " +
+                $"LIMIT {@params.PageSize}";
 
             var result = (await _connection.QueryAsync<Category>(query)).ToList();
 
@@ -130,7 +130,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         try
         {
             await _connection.OpenAsync();
-            string query = $"UPDATE public.categories SET name=@CategoryName, description=@Description, created_at=@CreatedAt, " +
+            string query = $"UPDATE public.categories SET category_name=@CategoryName, description=@Description, created_at=@CreatedAt, " +
                 $"updated_at=@UpdatedAt, image_path=@ImagePath WHERE id = {id};";
 
             var result = await _connection.ExecuteAsync(query, entity);

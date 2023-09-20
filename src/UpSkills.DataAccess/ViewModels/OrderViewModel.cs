@@ -10,7 +10,7 @@ public class OrderViewModel : AudiTable
     public string LastName { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public string ImagePath { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
+    public string CourseName { get; set; } = string.Empty;
     public float PricePerMonth { get; set; }
     public DateTime CreatedAt { get; set; }
 }

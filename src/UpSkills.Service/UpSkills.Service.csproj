@@ -29,14 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\Orders\" />
-    <Folder Include="Interfaces\Users\" />
     <Folder Include="Interfaces\Videos\" />
     <Folder Include="Service\Categories\" />
-    <Folder Include="Service\Courses\" />
-    <Folder Include="Service\Orders\" />
     <Folder Include="Service\Videos\" />
-    <Folder Include="Service\Users\" />
   </ItemGroup>
 
 </Project>

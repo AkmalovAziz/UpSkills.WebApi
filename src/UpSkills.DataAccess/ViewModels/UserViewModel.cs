@@ -9,5 +9,5 @@ public class UserViewModel : AudiTable
     public string PhoneNumber { get; set; } = string.Empty;
     public string ImagePath { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateOnly BirthDate { get; set; }
+    public string BirthDate { get; set; } = string.Empty;
 }

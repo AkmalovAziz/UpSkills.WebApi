@@ -41,7 +41,7 @@ public class AuthService : IAuthService
     {
         var user = await _repository.GetByEmailAsync(loginDto.Email);
         if (user is null) throw new UserNotFoundException();
-        var hasherResult = PasswordHasher.Verify(loginDto.Password, user.Password, user.Salt);
+        var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
         if (hasherResult == false) throw new PasswordIncorrectException();
         string token = await _tokenService.GenerateToken(user);
 
@@ -50,7 +50,7 @@ public class AuthService : IAuthService
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegistrDto dto)
     {
         var user = await _repository.GetByEmailAsync(dto.Email);
-        if (user is not null) throw new AllReadyExistsException();
+        if (user is not null) throw new UserAllReadyExistsException();
         if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + dto.Email, out RegistrDto cachedRegisterDto))
         {
             cachedRegisterDto.FirstName = cachedRegisterDto.FirstName;
@@ -66,7 +66,7 @@ public class AuthService : IAuthService
     public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string email)
     {
         var users = await _repository.GetByEmailAsync(email);
-        if (users is not null) throw new AllReadyExistsException();
+        if (users is not null) throw new UserAllReadyExistsException();
         if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + email, out RegistrDto registerDto))
         {
             VerificationDto verificationDto = new VerificationDto();
@@ -89,7 +89,7 @@ public class AuthService : IAuthService
             if (emailResult is true) return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_VERIFICATION);
             else return (Result: false, CachedVerificationMinutes: 0);
         }
-        else throw new ExpiredException();
+        else throw new EmailExpiredException();
     }
     public async Task<(bool Result, string Token)> VerifyRegisterAsync(string email, int code)
     {
@@ -98,7 +98,7 @@ public class AuthService : IAuthService
             if (_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY + email, out VerificationDto verificationDto))
             {
                 if (verificationDto.Attempt >= VERIFICATION_MAXIMUM_ATTEMPTS)
-                    throw new TooManyRequestException();
+                    throw new VaerificationTooManyRequestException();
                 else if (verificationDto.Code == code)
                 {
                     var dbResult = await RegisterToDatabaseAsync(registerDto);
@@ -122,9 +122,9 @@ public class AuthService : IAuthService
                     return (Result: false, Token: "");
                 }
             }
-            else throw new TooManyRequestException();
+            else throw new VaerificationTooManyRequestException();
         }
-        else throw new ExpiredException();
+        else throw new EmailExpiredException();
     }
     private async Task<bool> RegisterToDatabaseAsync(RegistrDto registerDto)
     {
@@ -134,7 +134,7 @@ public class AuthService : IAuthService
         user.Email = registerDto.Email;
         user.Status = UserStatusRoles.User;
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
-        user.Password = hasherResult.Hash;
+        user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
         user.Amount = 100000;
         user.CreatedAt = user.UpdatedAt = TimeHelpers.GetDateTime();

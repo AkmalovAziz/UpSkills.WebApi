@@ -11,4 +11,5 @@ public interface ICategoryService
     public Task<bool> DeleteAsync(long categoryId);
     public Task<IList<Category>> GetAllAsync(PaginationParams @params);
     public Task<Category> GetByIdAsync(long categoryId);
+    public Task<long> CountAsync();
 }

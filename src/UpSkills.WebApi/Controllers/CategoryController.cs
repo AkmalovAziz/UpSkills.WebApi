@@ -12,7 +12,7 @@ namespace UpSkills.WebApi.Controllers
     public class CategoryController : ControllerBase
     {
         private ICategoryService _service;
-        private readonly int maxImageSize = 5;
+        private readonly int maxPageSize = 30;
 
         public CategoryController(ICategoryService service)
         {
@@ -47,11 +47,15 @@ namespace UpSkills.WebApi.Controllers
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
-            => Ok(await _service.GetAllAsync(new PaginationParams(page, maxImageSize)));
+            => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
         [HttpGet("{categoryId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetByIdAsync(long categoryId)
             => Ok(await _service.GetByIdAsync(categoryId));
+
+        [HttpGet("count")]
+        [AllowAnonymous]
+        public async Task<IActionResult> CountAsync() => Ok(await _service.CountAsync());
     }
 }

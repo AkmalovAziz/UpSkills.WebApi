@@ -20,7 +20,7 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateDto>
             return MediaHelpers.GetImageExtension().Contains(fileinfo.Extension);
         }).WithMessage("This file type isn't image file");
 
-        RuleFor(dto => dto.Name).NotNull().NotEmpty().WithMessage("Name is required !")
+        RuleFor(dto => dto.CategoryName).NotNull().NotEmpty().WithMessage("Name is required !")
             .MinimumLength(3).WithMessage("Name must be more than 3 characters")
             .MaximumLength(30).WithMessage("Name must be less than 30 characters");
 

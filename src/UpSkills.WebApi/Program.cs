@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Diagnostics;
 using UpSkills.WebApi.Configurations;
 using UpSkills.WebApi.Configurations.Layers;
+using UpSkills.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 

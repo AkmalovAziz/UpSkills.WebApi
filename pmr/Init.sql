@@ -5,7 +5,7 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public.users
 (
-    id bigint NOT NULL,
+    id bigint generated always as identity NOT NULL,
     first_name character varying(30),
     last_name character varying(30),
     phone_number character varying(13),
@@ -24,8 +24,8 @@ CREATE TABLE IF NOT EXISTS public.users
 
 CREATE TABLE IF NOT EXISTS public.categories
 (
-    id bigint NOT NULL,
-    name text,
+    id bigint generated always as identity NOT NULL,
+    category_name text,
     description text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS public.categories
 
 CREATE TABLE IF NOT EXISTS public.courses
 (
-    id bigint NOT NULL,
+    id bigint generated always as identity NOT NULL,
     category_id bigint NOT NULL,
-    name text,
+    course_name text,
     price_per_month real,
     description text,
     image_path text,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS public.courses
 
 CREATE TABLE IF NOT EXISTS public.videos
 (
-    id bigint NOT NULL,
+    id bigint generated always as identity NOT NULL,
     course_id bigint NOT NULL,
     image_path text,
     descriptions text,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS public.videos
 
 CREATE TABLE IF NOT EXISTS public.orders
 (
-    id bigint NOT NULL,
+    id bigint generated always as identity NOT NULL,
     course_id bigint NOT NULL,
     user_id bigint,
     created_at timestamp without time zone,
